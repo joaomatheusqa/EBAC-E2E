@@ -42,9 +42,11 @@ Após abrir o dashboard, selecione um dos navegadores (De preferencia Electron) 
 ### Bibliotecas de apoio:
 -Cypress: Framework de automação: https://cypress.io/
 
-### Bom exercício ;) 
-Fábio & José Ernesto
-Qualidade de software
+### OBSERVAÇÕES DO PROJETO ;) 
+O código foi pensado tentando usar todos os métodos aprendidos no curso, é possível visualizar a existencia de duas funções que não são chamadas e um arquivo fixture, foi preferivel deixar documentado para idéia de que é possível realizar a mesma função com métodos diferentes.
+O "for" no código principal foi uma alternativa para tratar a demanda do teste incluindo 4 produtos, mas fico aberto a sugestões de como abordar essa necessidade de forma mais elegante.
+
+João Matheus de Quadros
 
 
 
