@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cypress:run-multiple": "powershell -Command \"for ($i = 1; $i -le 5; $i++) { npm run cypress:run }\"",
+    "cypress:run": "cypress run"
   },
   "keywords": [],
   "author": "",

@@ -10,8 +10,8 @@ class comprasPage {
 
     filtrarProdutos(){
         //Listar produtos de acordo com a ordenação (Método select)
-        cy.get('[name="orderby"]').select('Ordenar por preço: menor para maior')
-        cy.get('.woof_remove_ppi').should('contain', 'price low to high')
+        cy.get('[name="orderby"]').select('Ordenar por preço: maior para menor')
+        cy.get('.woof_remove_ppi').should('contain', 'price high to low')
         
     }
 
@@ -39,26 +39,34 @@ class comprasPage {
     }
 
 
-    addCarrinho(){
-        //Selecionar um tamanho e cor aleatoriamente analisando antes quantas opções, a quantidade ficou definida 2
+    addCarrinho() {
+        // Selecionar um tamanho e cor aleatoriamente analisando antes quantas opções, a quantidade ficou definida 2
         cy.get('.variable-items-wrapper[data-attribute_name="attribute_size"] > li').then($tamanho => {
-            const tamanhoContagem = $tamanho.length
-            const tamanhoAleatorio = Math.floor(Math.random() * tamanhoContagem)
-            cy.wrap($tamanho).eq(tamanhoAleatorio).click()
-        })
-
-        
+          const tamanhoContagem = $tamanho.length;
+          const tamanhoAleatorio = Math.floor(Math.random() * tamanhoContagem);
+          cy.wrap($tamanho).eq(tamanhoAleatorio).click();
+        });
+      
         cy.get('.variable-items-wrapper[data-attribute_name="attribute_color"] > li').then($cor => {
-            const corContagem = $cor.length
-            const corAleatoria = Math.floor(Math.random() * corContagem)
-            cy.wrap($cor).eq(corAleatoria).click()
-        })
-        cy.get('[name="quantity"]').clear().type(2) // Aqui se devide a quantidade
-        cy.get('.single_add_to_cart_button').click()
-        cy.get('.woocommerce-message').should('contain', 'foram adicionados no seu carrinho.')
-        cy.go(-2)
-
-    }
+          const corContagem = $cor.length;
+          const corAleatoria = Math.floor(Math.random() * corContagem);
+          cy.wrap($cor).eq(corAleatoria).click();
+        });
+      
+        cy.get('body').then($body => {
+          if ($body.find('.stock.out-of-stock').length) {
+            // Produto fora de estoque, voltar e tentar novamente
+            cy.go(-2);
+          } else {
+            // Produto em estoque, continuar com o processo
+            cy.get('[name="quantity"]').clear().type(2); // Define a quantidade
+            cy.get('.single_add_to_cart_button').click();
+            cy.get('.woocommerce-message').should('contain', 'foram adicionados no seu carrinho.');
+            cy.go(-2);
+          }
+        });
+      }
+      
 
     checkout(){
         //Selecionar botões de forma simples com click para ir pra tela de cadastro
@@ -86,7 +94,7 @@ class comprasPage {
         cy.get('#terms').click()
         cy.get('#place_order').click()
         cy.wait(2000)
-        cy.get('.woocommerce-order-overview__order order').should('contain', 'Número do pedido:')
+        cy.get('.page-title').should('contain', 'Pedido recebido')
     }
 
     
